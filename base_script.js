@@ -1,4 +1,4 @@
-var supermarketItems = crossfilter([{'grade': 'AA1',
+var gradeDict = crossfilter([{'grade': 'AA1',
   'name': 'Leahy, \xc3\x81ine',
   'natScore': 4,
   'order': 1,
@@ -119,7 +119,7 @@ var ranking = {
     "BD3":35,
 }
 
-var dimensionGrade = supermarketItems.dimension(student_grade => student_grade.grade)
+var dimensionGrade = gradeDict.dimension(student_grade => student_grade.grade)
 var countByGrade = dimensionGrade.group().reduceCount()
 console.log(countByGrade.all())
 var natAvg = dimensionGrade.group()
@@ -130,7 +130,7 @@ var reducer = reductio()
 reducer(natAvg)
 
 
-let dimensionSubject = supermarketItems.dimension(student_grade => student_grade.subject)
+let dimensionSubject = gradeDict.dimension(student_grade => student_grade.subject)
 let countBySubject = dimensionSubject.group().reduceCount()
 
 
@@ -215,6 +215,28 @@ window.onresize = function() {
 
     dc.redrawAll();
 };
+
+categoryChart = dc.rowChart("#chart-category");
+
+categorySubject = dimensionSubject.group();
+
+categoryChart //rowChart
+      .width(200).height(100)
+      .dimension(dimensionSubject) 
+      .colors(['#F74427'])         
+      .group(categorySubject)
+      .valueAccessor(function(d) {
+        return 50; //fixed size to make a square checkbox
+      })
+      .title(function(d) { return d.key; })
+      .renderlet(function (chart) {
+        chart.selectAll("g").selectAll("row _0").attr("transform", "translate(38, 0)");
+        chart.selectAll("g").selectAll("row _1").attr("transform", "translate(-38, 0)");
+      });
+
+categoryChart.xAxis().tickFormat(function(v) { return ""; });    
+
+categoryChart.render()
 
 
 console.log(natAvg.all())
