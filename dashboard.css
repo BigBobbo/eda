@@ -100,5 +100,6 @@ body {
 }
 
 
-
-#chart-category svg g g.axis.x { display: none; }
+#rowChart g.row text {
+  font-size: Large;
+}
