@@ -6851,7 +6851,6 @@ var fudge = 10;
 
 var dimensionGrade = gradeDict.dimension(student_grade => student_grade.grade)
 var countByGrade = dimensionGrade.group().reduceCount()
-// console.log(countByGrade.all())
 
 // Attempt to get %
 var avgGradeNational = dimensionGrade.group()
@@ -6861,22 +6860,9 @@ var reducerloc = reductio()
     .avg(true);
 reducerloc(avgGradeNational)
 
-var dimensionName = gradeDict.dimension(student_grade => student_grade.name)
-var countByName = dimensionName.group().reduceCount()
-// console.log("Name count")
-// console.log(countByName.all())
+// Total number count for getting %
 var dimensionIndex = gradeDict.dimension(student_grade => student_grade.index)
 var countByIndex = dimensionIndex.group().reduceCount()
-
-
-// var dimensionRank = supermarketItems.dimension(student_grade => student_grade.rank)
-
-var natAvg = dimensionGrade.group()
-var reducer = reductio()
-    .count(true)
-    .sum(function(d) { return national[d.grade]; })
-    .avg(true);
-reducer(natAvg)
 
 
 let dimensionSubject = gradeDict.dimension(student_grade => student_grade.subject)
@@ -6910,47 +6896,47 @@ catGroup      = dimensionGrade.group().reduce(
 // Composite chart
 
 
-var composite = dc.compositeChart("#composite_grades2");
- composite
-        .width(window.innerWidth*3/5 - fudge)
-        .height(window.innerHeight*2/3 - fudge)
-        .x(d3.scaleBand())
-        .xUnits(dc.units.ordinal)
-        .yAxisLabel("The Y Axis")
-        .group(avgGradeNational)
-        ._rangeBandPadding(1)
-        .legend(dc.legend().x(80).y(20).itemHeight(13).gap(5))
-            .ordering(function(d) { return -ranking[d.key]; })
-        .renderHorizontalGridLines(true)
-        .compose([
-            // dc.barChart(composite)
-            //     .dimension(dimensionGrade)
-            //     .colors('red')
-            //     .centerBar(true)
-            //     .gap(1)
-            //     .group(avgGradeNational, "School Values")
-            //     .valueAccessor(function (p) {return p.value.count/countByIndex.all().length}),
-            dc.barChart(composite)
-                .dimension(dimensionGrade)
-                .colors('#87a8dd')
-                .centerBar(true)
-                .gap(1)
-                .group(avgGradeNational, "National Values")
-                .valueAccessor(function (p) {return p.value.avg}),
-            // dc.lineChart(composite)
-            //     .dimension(dimensionGrade)
-            //     .colors('red')
-            //     .group(avgGradeNational, "National Line")
-            //     .valueAccessor(function (p) {return p.value.avg}),
-            dc.lineChart(composite)
-                .dimension(dimensionGrade)
-                .colors('red')
-                .group(avgGradeNational, "School values")
-                .valueAccessor(function (p) {return p.value.count/countByIndex.all().length})
-                .dashStyle([2,2])
-            ]);
+// var composite = dc.compositeChart("#composite_grades2");
+//  composite
+//         .width(window.innerWidth*3/5 - fudge)
+//         .height(window.innerHeight*2/3 - fudge)
+//         .x(d3.scaleBand())
+//         .xUnits(dc.units.ordinal)
+//         .yAxisLabel("The Y Axis")
+//         .group(avgGradeNational)
+//         ._rangeBandPadding(1)
+//         .legend(dc.legend().x(80).y(20).itemHeight(13).gap(5))
+//             .ordering(function(d) { return -ranking[d.key]; })
+//         .renderHorizontalGridLines(true)
+//         .compose([
+//             // dc.barChart(composite)
+//             //     .dimension(dimensionGrade)
+//             //     .colors('red')
+//             //     .centerBar(true)
+//             //     .gap(1)
+//             //     .group(avgGradeNational, "School Values")
+//             //     .valueAccessor(function (p) {return p.value.count/countByIndex.all().length}),
+//             dc.barChart(composite)
+//                 .dimension(dimensionGrade)
+//                 .colors('#87a8dd')
+//                 .centerBar(true)
+//                 .gap(1)
+//                 .group(avgGradeNational, "National Values")
+//                 .valueAccessor(function (p) {return p.value.avg}),
+//             // dc.lineChart(composite)
+//             //     .dimension(dimensionGrade)
+//             //     .colors('red')
+//             //     .group(avgGradeNational, "National Line")
+//             //     .valueAccessor(function (p) {return p.value.avg}),
+//             dc.lineChart(composite)
+//                 .dimension(dimensionGrade)
+//                 .colors('red')
+//                 .group(avgGradeNational, "School values")
+//                 .valueAccessor(function (p) {return p.value.count/countByIndex.all().length})
+//                 .dashStyle([2,2])
+//             ]);
 
-composite.render();
+// composite.render();
 
 
 console.log(catGroup.all())
@@ -6970,8 +6956,8 @@ console.log(catGroup.all())
 var boxChart = dc.boxPlot("#box-test")
   
   boxChart
-    .width(768)
-    .height(480)
+    .width(window.innerWidth*4/5 - fudge)
+    .height(window.innerHeight*4/5 - fudge)
     .margins({top: 10, right: 50, bottom: 30, left: 50})
     .dimension(dimensionGrade)
     .group(catGroup)

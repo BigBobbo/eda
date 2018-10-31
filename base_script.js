@@ -6896,11 +6896,21 @@ var composite = dc.compositeChart("#composite_grades");
                 .centerBar(true)
                 .gap(5)
                 .group(avgGradeNational, "National Values")
+                // .valueAccessor(function (p) {return p.value.count/countByOrder.all()[0].value}),
                 .valueAccessor(function (p) {return p.value.avg}),
+            // dc.barChart(composite)
+            //     .dimension(dimensionGrade)
+            //     .colors('#87a8dd')
+            //     .centerBar(true)
+            //     .gap(5)
+            //     .group(avgGradeNational, "National Values")
+            //     .valueAccessor(function (p) {return p.value.count/countByOrder.all()[0].value}),
+            //     // .valueAccessor(function (p) {return p.value.avg}),
         dc.lineChart(composite)
             .dimension(dimensionGrade)
             .colors('red')
             .group(avgGradeNational, "School Values")
+              // .valueAccessor(function (p) {return p.value.avg})
             .valueAccessor(function (p) {return p.value.count/countByOrder.all()[0].value})
             .dashStyle([2,2])
             ]);
@@ -6916,7 +6926,7 @@ categoryChart //rowChart
       .width(window.innerWidth*1/5 - fudge)
       .height(window.innerHeight*3/6 - fudge)
       .dimension(dimensionSubject) 
-      .colors(['#4B0082'])         
+      .colors(['#E6E6FA'])         
       .group(countBySubject)
       .valueAccessor(function(d) {
         return 50; //fixed size to make a square checkbox
@@ -6937,12 +6947,48 @@ levelPie
     .width(window.innerWidth*1/5 - fudge)
     .height(window.innerHeight*1/6 - fudge)
     .innerRadius(25)
+              .externalLabels(-10)
     .label(function(d) {
         return d.key + ': ' + d.value;
     })
     .dimension(dimensionLevel)
     .group(countByLevel);
 levelPie.render();
+
+
+
+
+
+
+
+// Order Filter (janky)
+var dimensionAll = gradeDict.dimension(student_grade => student_grade)
+
+
+var table_chart = dc.dataTable("#table_chart");
+
+rank = function (p) { return "" }
+
+table_chart
+    .width(768)
+    .height(480)
+    .dimension(dimensionAll)
+    .group(rank)
+    .columns([function (d) { return d.name },
+              function (d) { return d.subject },
+              function (d) { return d.grade },
+              // function (d) { return d.value.sum }
+              ])
+    .sortBy(function (d) { return d.key })
+    .order(d3.descending)
+table_chart.render();
+
+
+
+
+
+
+
 
 
 // Resize the charts
@@ -6967,7 +7013,7 @@ window.onresize = function() {
 };
 
 
-
+// /https://dc-js.github.io/dc.js/docs/stock.html
 
 // console.log(natAvg.all())
 // console.log(countByGrade.all())

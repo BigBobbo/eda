@@ -100,6 +100,31 @@ body {
 }
 
 
-#rowChart g.row text {
-  font-size: Large;
+#chart-category g.row text {fill: black;}
+
+#chart-category svg g g.axis.x { display: none; }
+
+
+.table {
+    width: 200%;
+}
+
+
+.dc-table-label{
+                           width: 1000px;
+                           // text-align:right;
+                           column-span:all;
+                       }
+
+.header{
+                           width: 1000px;
+
+                           column-span:all;
+                       }
+
+#header_of_table {
+  width: 1000px;
+                           column-span:all;
+                          text-align:left;
+
 }
